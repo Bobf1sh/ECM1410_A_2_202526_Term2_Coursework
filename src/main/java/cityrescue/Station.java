@@ -73,5 +73,20 @@ public void setCapacity(int newCapacity) {
   capacity = newCapacity;
 }
 
-  
+public void removeUnit(int unitId) {
+  int index = -1;
+
+  for (int i = 0; i < unitCount; i++) {
+    if (unitIds[i] == unitId) {
+      index = i;
+      break;
+    }
+  }
+
+  for (int i = index: i < unitCount - 1: i++) {
+    unitIds[i] = unitIds[i + 1];
+  }
+
+  unitCount --;
+}
   

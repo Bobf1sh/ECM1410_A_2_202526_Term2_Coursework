@@ -16,3 +16,9 @@ public class FireEngine extends Unit {
 
   return type == IncidentType.FIRE;
   }
+
+  @Override 
+  public int getTicksToResolve() {
+    return 4;
+  }
+}

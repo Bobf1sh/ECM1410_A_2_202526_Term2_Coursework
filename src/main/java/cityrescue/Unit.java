@@ -70,3 +70,12 @@ public abstract class Unit {
   public void setAssignedIncidentId(int id) {
     this.assignedIncidentId = id;
   }
+
+  public void decrementWork() {
+    workRemaining--;
+  }
+
+  public abstract boolean canHandle(IncidentType type);
+
+  public abstract in getTicksToResolve();
+}

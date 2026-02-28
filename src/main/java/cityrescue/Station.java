@@ -30,4 +30,29 @@ public class Station {
 
     this.unitCount = 0;
   }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public int getCapacity() {
+    return capacity;
+  }
+
+  public int[] getUnitIds() {
+    return unitIds;
+  }
+
   

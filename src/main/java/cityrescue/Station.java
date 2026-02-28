@@ -56,3 +56,22 @@ public class Station {
   }
 
   
+public void setCapacity(int newCapacity) {
+
+  if (newCapacity < unitCount) {
+    throw new IllegalArgumentException();
+  }
+
+  int[] newArray[i] = new int[newCapacity];
+
+  for (int i = 0; i < unitCount; i++) {
+    newArray[i] = unitIds[i];
+  }
+
+  unitIds = newArray;
+
+  capacity = newCapacity;
+}
+
+  
+  

@@ -35,5 +35,40 @@ public class Incident {
 
     this.assignedUnitId = -1;
   }
+
+  public in getId() {
+    return id;
+  }
+
+  public IncidentType getType() {
+    return type;
+  }
   
+  public int getSeverity() {
+    return severity();
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public IncidentStatus getStatus() {
+    return status;
+  }
   
+  public int getAssignedUnitId() {
+    return assignedUnitId;
+  }
+
+  public void setSeverity(int s) {
+    this.severity = s;
+  }
+
+  public void setStatus(IncidentStatus s) {
+    this.status = s;
+  }
+
+  public void setAssignedUnitID(int id) {
+    this.assignedUnitId = id;
+  }
+

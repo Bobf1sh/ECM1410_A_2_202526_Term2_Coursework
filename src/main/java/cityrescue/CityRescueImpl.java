@@ -26,8 +26,19 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (width <= 0 || height <= 0) {
+        throw new InvalidGridException("Invalid Grid");
+        }
+        map = new CityMap(width,height);
+        tick = 0;
+
+        stations = 0;
+        unitCount = 0;
+        incidentCount = 0;
+
+        nextStationId = 1;
+        nextUnitId = 1;
+        nextIncidentId = 1;
     }
 
     @Override

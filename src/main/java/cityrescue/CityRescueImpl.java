@@ -43,26 +43,36 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int[] getGridSize() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        return new int[]{map.getWidth(), map.getHeight()};
     }
 
     @Override
     public void addObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        map.addObstacle(x, y);
     }
 
     @Override
     public void removeObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        map.removeObstacle(x, y);
     }
 
     @Override
-    public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public int addStation(String name, int x, int y)
+            throws InvalidNameException, InvalidLocationException {
+        
+        if (name == null || name.isBlank()) {
+            throw new InvalidNameException("Invalid name");
+        }
+        if (!map.isInBounds(x, y) || map.isBlocked(x, y)) {
+            throw new InvalidLocationException("Invalid location");
+        }
+        if (stationCount >= MAX_STATIONS) {
+            throw new CapacityExceededException("Max stations reached");
+        }
+
+        Station s = new Station(nextStationId, name, x, y);
+        stations[stationCount++] = s;
+        return nextStationId++;
     }
 
     @Override

@@ -93,7 +93,7 @@ public class CityRescueImpl implements CityRescue {
         
         int index = findStationIndex(stationId);
         if (maxUnits <= 0) {
-            throw new InvalidCapacityException("Invlaid capacity"):
+            throw new InvalidCapacityException("Invlaid capacity");
         }
         if (maxUnits < stations[index].getUnitCount()) {
             throw new InvalidCapacityException("Too small");

@@ -3,15 +3,26 @@ package cityrescue;
 import cityrescue.enums.*;
 import cityrescue.exceptions.*;
 
-/**
- * CityRescueImpl (Starter)
- *
- * Your task is to implement the full specification.
- * You may add additional classes in any package(s) you like.
- */
 public class CityRescueImpl implements CityRescue {
 
-    // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
+    private static final int MAX_STATIONS = 20;
+    private static final int MAX_UNITS = 50;
+    private static final int MAX_INCIDENTS = 200;
+
+    private CityMap map;
+    private int tick;
+
+    private Station[] stations;
+    private Unit[] units;
+    private Incident[] incidents;
+
+    private int stationCount;
+    private int unitCount;
+    private int incidentCount;
+
+    private int nextStationId;
+    private int nextUnitId;
+    private in nextIncidentId;
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {

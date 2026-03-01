@@ -76,21 +76,38 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void removeStation(int stationId)
+            throws IDNotRecognisedException, IllegalStateException {
+        
+
+        int index = findStationIndex(stationId);
+        if (stations[index].getUnitCount() > 0) {
+            throw new IllegalStateException("Station not empty");
+        }
+        removeStationAt(index);
     }
 
     @Override
-    public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void setStationCapacity(int stationId, int maxUnits) 
+            throws IDNotRecognisedException, InvalidCapacityException {
+        
+        int index = findStationIndex(stationId);
+        if (maxUnits <= 0) {
+            throw new InvalidCapacityException("Invlaid capacity"):
+        }
+        if (maxUnits < stations[index].getUnitCount()) {
+            throw new InvalidCapacityException("Too small");
+        }
+        stations[index].setCapacity(maxUnits);
     }
 
     @Override
     public int[] getStationIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        int[] ids = new int[stationCount];
+        for (int i = 0; i < stationCount; i++) {
+            ids[i] = stations[i].getId();
+        }
+        return ids;
     }
 
     @Override

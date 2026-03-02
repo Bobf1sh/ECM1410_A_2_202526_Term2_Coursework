@@ -36,7 +36,7 @@ public boolean isBlocked(int x, int y) {
 }
 public void addObstacle(int x, int y) throws InvalidLocationException {
     if (!isInBounds(x, y)) {
-        throw new InvalidLocatoinException("Invalid Location"); 
+        throw new InvalidLocationException("Invalid Location"); 
     }
     blocked[x][y] = true;
 }

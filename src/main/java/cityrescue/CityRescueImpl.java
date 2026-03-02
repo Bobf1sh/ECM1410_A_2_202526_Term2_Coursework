@@ -217,21 +217,59 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public int reportIncident(IncidentType type, int severity, int x, int y)
+            throws InvalidSeverityException, InvalidLocationException {
+        
+        if (type == null || severity < 1 || severity > 5) {
+            throw new InvalidSeverityException("Invalid severity");
+        }
+        if (!map.isInBounds(x, y) || map.isBlocked(x, y)) {
+            throw new InvalidLocationException("Invalid location");
+        }
+        if (incidentCount >= MAX_INCIDENTS) {
+            throw new CapacityExceededException("Max incidents reached");
+        }
+
+        Incident inc = new Incident(nextIncidentId, type, severity, x, y);
+        incidents[incidentCount++] = inc;
+        return nextIncidentId++;
     }
 
     @Override
-    public void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void cancelIncident(int incidentId)
+            throws IDNotRecognisedException, IllegalStateException {
+        Incident inc = incidents[findIncidentIndex(incidentId)];
+
+        if (inc.getStatus() == IncidentStatus.RESOLVED ||
+            inc.getStatus() == IncidentStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot cancel");
+        }
+
+        if (inc.getStatus() == IncidentStatus.DISPATCHED) {
+            Unit u = units[findUnitIndex(inc.getAssignedUnitId())];
+            u.setStatus(UnitStatus.IDLE);
+            u.setAssignedIncidentId(-1);
+        }
+
+        inc.setStatus(IncidentStatus.CANCELLED);
     }
 
     @Override
-    public void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void escalateIncident(int incidentId, int newSeverity)
+            throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
+        
+        if (newSeverity < 1 || newSeverity > 5) {
+            throw new InvalidSeverityException("Invalid severity");
+        }
+
+        Incident inc = incidents[findIncidentIndex(incidentId)];
+
+        if (inc.getStatus() == IncidentStatus.RESOLVED ||
+            inc.getStatus() == IncidentStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot escalate");
+        }
+
+        inc.setSeverity(newSeverity);
     }
 
     @Override

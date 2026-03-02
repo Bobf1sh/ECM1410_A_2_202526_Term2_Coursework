@@ -47,7 +47,7 @@ public class Incident {
   public int getSeverity() {
     return severity;
   }
-  
+
   public int getX() {
     return x;
   }
@@ -60,8 +60,8 @@ public class Incident {
     return status;
   }
   
-  public int getAssignedUnitId() {
-    return assignedUnitId;
+  public int getAssignedUnitId(int id) {
+    return assignedUnitId = id;
   }
 
   public void setSeverity(int s) {

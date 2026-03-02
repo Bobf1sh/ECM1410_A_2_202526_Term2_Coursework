@@ -331,13 +331,65 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void tick() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        
+        tick++;
+
+        for (int i = 0; i < unitCount; i++) {
+            Unit u = units[i];
+
+            if (u.getStatus() == UnitStatus.EN_ROUTE) {
+                Incident inc = incidents[findIncidentIndex(u.getAssignedIncidentId())];
+                moveUnit(u, inc.getX(), inc.getY());
+
+                if (u.getX() == inc.getX() &&
+                        u.getY() == inc.getY()) {
+
+                    u.setStatus(UnitStatus.AT_SCENE);
+                    inc.setStatus(IncidentStatus.IN_PROGRESS);
+                    u.setWorkRemaining(u.getTicksToResolve());
+                }
+            }
+        }
+
+        for (int i = 0; i < unitCount; i++) {
+            Unit u = units[i];
+
+            if (u.getStatus() == UnitStatus.AT_SCENE) {
+                u.decrementWork();
+
+                if (u.getWorkRemaining() == 0) {
+                    Incident inc = incidents[findIncidentIndex(u.getAssignedIncidentId())];
+                    inc.setStatus(IncidentStatus.RESOLVED);
+
+                    u.setStatus(UnitStatus.IDLE);
+                    u.setAssignedIncidentId(-1);
+                }
+            }
+        }
     }
 
     @Override
     public String getStatus() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("TICK=").append(tick).append("\n");
+        sb.append("STATIONS=").append(stationCount)
+                .append(" UNITS=").append(unitCount)
+                .append(" INCIDENTS=").append(incidentCount)
+                .append(" OBSTACLES=").append(map.getObstacleCount())
+                .append("\n");
+
+        sb.append("INCIDENTS\n");
+        for (int i = 0; i < incidentCount; i++) {
+            sb.append(formatIncident(incidents[i])).append("\n");
+        }
+
+        sb.append("UNITS\n");
+        for (int i = 0; i < unitCount; i++) {
+            sb.append(formatUnit(units[i])).append("\n");
+        }
+
+        return sb.toString().trim();
     }
 }

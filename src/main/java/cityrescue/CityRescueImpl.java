@@ -274,20 +274,59 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int[] getIncidentIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        int[] ids = new int[incidentCount];
+        for (int i = 0; i < incidentCount; i++) {
+            ids[i] = incidents[i].getId();
+        }
+        return ids;
     }
 
     @Override
-    public String viewIncident(int incidentId) throws IDNotRecognisedException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    public String viewIncident(int incidentId)
+            throws IDNotRecognisedException {
+        Incident inc = incidents[findIncidentIndex(incidentId)];
+        return formatIncident(inc);
     }
 
     @Override
     public void dispatch() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int i = 0; i < incidentCount; i++) {
+            Incident inc = incidents[i];
+
+            if (inc.getStatus() != IncidentStatus.REPORTED)
+                continue;
+
+            Unit best = null;
+            int bestDist = Integer.MAX_VALUE;
+
+            for (int j = 0; j < unitCount; j++) {
+                Unit u = units[j];
+
+                if (u.getStatus() != UnitStatus.IDLE)
+                    continue;
+                if (!u.canHandle(inc.getType()))
+                    continue;
+
+                int dist = manhattan(u.getX(), u.getY(),
+                        inc.getX(), inc.getY());
+
+                if (best == null ||
+                        dist < bestDist ||
+                        (dist == bestDist &&
+                                u.getId() < best.getId())) {
+
+                    best = u;
+                    bestDist = dist;
+                }
+            }
+
+            if (best != null) {
+                inc.setStatus(IncidentStatus.DISPATCHED);
+                inc.setAssignedUnitId(best.getId());
+                best.setStatus(UnitStatus.EN_ROUTE);
+                best.setAssignedIncidentId(inc.getId());
+            }
+        }
     }
 
     @Override

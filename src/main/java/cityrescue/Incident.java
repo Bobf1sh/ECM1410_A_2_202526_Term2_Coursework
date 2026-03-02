@@ -72,7 +72,7 @@ public class Incident {
     this.status = s;
   }
 
-  public void setAssignedUnitID(int id) {
+  public void setAssignedUnitId(int id) {
     this.assignedUnitId = id;
   }
 

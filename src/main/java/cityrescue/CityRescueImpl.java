@@ -440,5 +440,28 @@ public class CityRescueImpl implements CityRescue {
                 (u.getStatus() == UnitStatus.AT_SCENE ?
                         " WORK=" + u.getWorkRemaining() : "");
     }
-    
+    private String formatIncident(Incident i) {
+        return "I#" + i.getId() +
+                " TYPE=" + i.getType() +
+                " SEV=" + i.getSeverity() +
+                " LOC=(" + i.getX() + "," + i.getY() + ")" +
+                " STATUS=" + i.getStatus() +
+                " UNIT=" +
+                (i.getAssignedUnitId() == -1 ? "-" : i.getAssignedUnitId());
+    }
+
+    private int findStationIndex(int id) throws IDNotRecognisedException {
+        for (int i = 0; i < stationCount; i++)
+            if (stations[i].getId() == id)
+                return i;
+        throw new IDNotRecognisedException("Not found");
+    }
+
+    private int findUnitIndex(int id) throws IDNotRecognisedException {
+        for (int i = 0; i < unitCount; i++)
+            if (units[i].getId() == id)
+                return i;
+        throw new IDNotRecognisedException("Not found");
+    }
+
 }

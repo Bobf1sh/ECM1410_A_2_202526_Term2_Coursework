@@ -17,6 +17,8 @@ public abstract class Unit {
 
   protected int workRemaining;
 
+  protected UnitStatus status;
+
   public Unit(int id, UnitType type, int homeStationId, int x, int y) {
     this.id = id;
 
@@ -42,8 +44,12 @@ public abstract class Unit {
     return homeStationId;
   }
 
-  public in getY() {
+  public int getY() {
     return y;
+  }
+
+  public int getX() {
+    return x;
   }
 
   public UnitStatus getStatus() {

@@ -80,6 +80,6 @@ public class Incident {
     if (assignedUnitId != -1) {
       System.out.println("Incident assigned to the unit:" + assignedUnitId);
     }
-  }
+}
 
 }

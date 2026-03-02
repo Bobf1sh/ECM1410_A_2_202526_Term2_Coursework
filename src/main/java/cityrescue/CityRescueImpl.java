@@ -22,7 +22,7 @@ public class CityRescueImpl implements CityRescue {
 
     private int nextStationId;
     private int nextUnitId;
-    private in nextIncidentId;
+    private int nextIncidentId;
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {

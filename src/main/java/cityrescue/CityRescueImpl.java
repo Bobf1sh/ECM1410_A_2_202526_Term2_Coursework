@@ -463,5 +463,22 @@ public class CityRescueImpl implements CityRescue {
                 return i;
         throw new IDNotRecognisedException("Not found");
     }
+    private int findIncidentIndex(int id) throws IDNotRecognisedException {
+        for (int i = 0; i < incidentCount; i++)
+            if (incidents[i].getId() == id)
+                return i;
+        throw new IDNotRecognisedException("Not found");
+    }
 
+    private void removeStationAt(int index) {
+        for (int i = index; i < stationCount - 1; i++)
+            stations[i] = stations[i + 1];
+        stations[--stationCount] = null;
+    }
+
+    private void removeUnitAt(int index) {
+        for (int i = index; i < unitCount - 1; i++)
+            units[i] = units[i + 1];
+        units[--unitCount] = null;
+    }
 }

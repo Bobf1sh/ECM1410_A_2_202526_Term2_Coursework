@@ -21,69 +21,50 @@ public class Station {
     this.id = id;
 
     this.name = name;
-
     this.x = x;
-
     this.y = y;
-
     this.capacity = 1;
-
     this.unitIds = new int[capacity];
-
     this.unitCount = 0;
   }
-
   public int getId() {
     return id;
   }
-
   public String getName() {
     return name;
   }
-
   public int getX() {
     return x;
   }
-
   public int getY() {
     return y;
   }
-
   public int getCapacity() {
     return capacity;
   }
-
   public int[] getUnitIds() {
     return unitIds;
   }
-
   public int getUnitCount() {
     return unitCount;
   }
-
   public void incrementUnit() {
     if(unitCount < capacity) unitCount++;
   }
-
   public void decrementUnit() {
     if(unitCount > 0) unitCount--;
   }
 
   
 public void setCapacity(int newCapacity) {
-
   if (newCapacity < unitCount) {
     throw new IllegalArgumentException("The new capacity cannot be less than total number of units");
   }
-
   int[] newArray = new int[newCapacity];
-
   for (int i = 0; i < unitCount; i++) {
     newArray[i] = unitIds[i];
   }
-
   unitIds = newArray;
-
   capacity = newCapacity;
 }
 

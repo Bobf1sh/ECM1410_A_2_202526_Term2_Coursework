@@ -96,7 +96,7 @@ public void removeUnit(int unitId) {
       break;
     }
   }
-
+  if (index == -1) return; 
   for (int i = index; i < unitCount - 1; i++) {
     unitIds[i] = unitIds[i + 1];
   }

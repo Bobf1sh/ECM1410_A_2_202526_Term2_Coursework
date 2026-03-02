@@ -21,4 +21,4 @@ jobs:
           java-version: '17'
 
       - name: Build and Test with Maven
-        run: mvn -B test
+        run: mvn -X test

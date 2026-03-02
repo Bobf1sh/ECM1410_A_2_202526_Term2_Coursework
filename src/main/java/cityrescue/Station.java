@@ -8,6 +8,8 @@ public class Station {
 
   private int y;
 
+  private String name; 
+
   private int capacity;
 
   private int[] unitIds;
@@ -62,7 +64,7 @@ public void setCapacity(int newCapacity) {
     throw new IllegalArgumentException();
   }
 
-  int[] newArray[i] = new int[newCapacity];
+  int[] newArray = new int[newCapacity];
 
   for (int i = 0; i < unitCount; i++) {
     newArray[i] = unitIds[i];
@@ -83,10 +85,11 @@ public void removeUnit(int unitId) {
     }
   }
 
-  for (int i = index: i < unitCount - 1: i++) {
+  for (int i = index; i < unitCount - 1; i++) {
     unitIds[i] = unitIds[i + 1];
   }
 
   unitCount --;
+}
 }
   

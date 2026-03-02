@@ -17,3 +17,4 @@ public class Ambulance extends Unit {
   public int getTicksToResolve() {
     return 2;
   }
+}

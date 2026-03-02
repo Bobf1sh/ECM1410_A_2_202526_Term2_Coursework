@@ -57,6 +57,18 @@ public class Station {
     return unitIds;
   }
 
+  public int getUnitCount() {
+    return unitCount;
+  }
+
+  public void incrementUnit() {
+    if(unitCount < capacity) unitCount++;
+  }
+
+  public void decrementUnit() {
+    if(unitCount > 0) unitCount--;
+  }
+
   
 public void setCapacity(int newCapacity) {
 

@@ -73,7 +73,7 @@ public class Station {
 public void setCapacity(int newCapacity) {
 
   if (newCapacity < unitCount) {
-    throw new IllegalArgumentException();
+    throw new IllegalArgumentException(The new capacity cannot be less than total number of units);
   }
 
   int[] newArray = new int[newCapacity];

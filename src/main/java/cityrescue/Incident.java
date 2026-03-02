@@ -61,7 +61,7 @@ public class Incident {
   }
   
   public int getAssignedUnitId(int id) {
-    return assignedUnitId = id;
+    return assignedUnitId;
   }
 
   public void setSeverity(int s) {

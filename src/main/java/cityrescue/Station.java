@@ -102,6 +102,6 @@ public void removeUnit(int unitId) {
   }
 
   unitCount --;
-}
+  }
 }
   

@@ -392,4 +392,53 @@ public class CityRescueImpl implements CityRescue {
 
         return sb.toString().trim();
     }
+
+    private int manhattan(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    private void moveUnit(Unit u, int tx, int ty) {
+
+        int[][] dirs = {{0,-1},{1,0},{0,1},{-1,0}};
+
+        for (int[] d : dirs) {
+            int nx = u.getX() + d[0];
+            int ny = u.getY() + d[1];
+
+            if (!map.isInBounds(nx, ny) || map.isBlocked(nx, ny))
+                continue;
+
+            int current = manhattan(u.getX(), u.getY(), tx, ty);
+            int next = manhattan(nx, ny, tx, ty);
+
+            if (next < current) {
+                u.setLocation(nx, ny);
+                return;
+            }
+        }
+
+        for (int[] d : dirs) {
+            int nx = u.getX() + d[0];
+            int ny = u.getY() + d[1];
+
+            if (!map.isInBounds(nx, ny) || map.isBlocked(nx, ny))
+                continue;
+
+            u.setLocation(nx, ny);
+            return;
+        }
+    }
+
+    private String formatUnit(Unit u) {
+        return "U#" + u.getId() +
+                " TYPE=" + u.getType() +
+                " HOME=" + u.getHomeStationId() +
+                " LOC=(" + u.getX() + "," + u.getY() + ")" +
+                " STATUS=" + u.getStatus() +
+                " INCIDENT=" +
+                (u.getAssignedIncidentId() == -1 ? "-" : u.getAssignedIncidentId()) +
+                (u.getStatus() == UnitStatus.AT_SCENE ?
+                        " WORK=" + u.getWorkRemaining() : "");
+    }
+    
 }

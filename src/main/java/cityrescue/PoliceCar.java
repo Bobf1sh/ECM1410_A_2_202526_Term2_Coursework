@@ -1,6 +1,6 @@
 package cityrescue;
 
-import cityresuce.enums.*;
+import cityrescue.enums.*;
 public class PoliceCar extends Unit {
 
   public PoliceCar(int id, int homeStationId, int x, int y) {
@@ -21,3 +21,4 @@ public class PoliceCar extends Unit {
   public int getTicksToResolve() {
     return 3;
   }
+}

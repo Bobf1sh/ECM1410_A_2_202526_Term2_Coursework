@@ -36,7 +36,7 @@ public class Incident {
     this.assignedUnitId = -1;
   }
 
-  public in getId() {
+  public int getId() {
     return id;
   }
 
@@ -45,7 +45,11 @@ public class Incident {
   }
   
   public int getSeverity() {
-    return severity();
+    return severity;
+  }
+  
+  public int getX() {
+    return x;
   }
 
   public int getY() {

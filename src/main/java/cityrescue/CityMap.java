@@ -16,7 +16,7 @@ public class CityMap {
 
     }
     
-    public in getWidth() {
+    public int getWidth() {
         return width;
     }
 

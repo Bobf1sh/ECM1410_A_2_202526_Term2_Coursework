@@ -76,4 +76,10 @@ public class Incident {
     this.assignedUnitId = id;
   }
 
+  public void markAssigned() {
+    if (assignedUnitId != -1) {
+      System.out.printIn("Incident assigned to the unit:" + assignedUnitId);
+    }
+  }
+
 }

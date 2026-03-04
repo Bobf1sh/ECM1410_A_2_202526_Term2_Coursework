@@ -13,7 +13,7 @@ public abstract class Unit {
 
   protected int y;
 
-  protected int assignedUnitId;
+  protected int assignedIncidentId;
 
   protected int workRemaining;
 

@@ -1,4 +1,3 @@
-
 package cityrescue;
 
 import cityrescue.enums.*;
@@ -60,7 +59,7 @@ public class Incident {
     return status;
   }
   
-  public int getAssignedUnitId(int id) {
+  public int getAssignedUnitId() {
     return assignedUnitId;
   }
 
@@ -80,6 +79,5 @@ public class Incident {
     if (assignedUnitId != -1) {
       System.out.println("Incident assigned to the unit:" + assignedUnitId);
     }
-}
-
+  }
 }

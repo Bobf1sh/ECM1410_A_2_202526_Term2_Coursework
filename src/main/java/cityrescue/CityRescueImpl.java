@@ -27,12 +27,16 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
         if (width <= 0 || height <= 0) {
-        throw new InvalidGridException("Invalid Grid");
+            throw new InvalidGridException("Invalid Grid");
         }
-        map = new CityMap(width,height);
+        map = new CityMap(width, height);
         tick = 0;
 
-        stations = 0;
+        stations = new Station[MAX_STATIONS];
+        units = new Unit[MAX_UNITS];
+        incidents = new Incident[MAX_INCIDENTS];
+
+        stationCount = 0;
         unitCount = 0;
         incidentCount = 0;
 
@@ -59,7 +63,7 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public int addStation(String name, int x, int y)
             throws InvalidNameException, InvalidLocationException {
-        
+
         if (name == null || name.isBlank()) {
             throw new InvalidNameException("Invalid name");
         }
@@ -78,7 +82,6 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public void removeStation(int stationId)
             throws IDNotRecognisedException, IllegalStateException {
-        
 
         int index = findStationIndex(stationId);
         if (stations[index].getUnitCount() > 0) {
@@ -88,12 +91,12 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public void setStationCapacity(int stationId, int maxUnits) 
+    public void setStationCapacity(int stationId, int maxUnits)
             throws IDNotRecognisedException, InvalidCapacityException {
-        
+
         int index = findStationIndex(stationId);
         if (maxUnits <= 0) {
-            throw new InvalidCapacityException("Invlaid capacity");
+            throw new InvalidCapacityException("Invalid capacity");
         }
         if (maxUnits < stations[index].getUnitCount()) {
             throw new InvalidCapacityException("Too small");
@@ -111,9 +114,9 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int addUnit(int stationId, UnitType type) 
+    public int addUnit(int stationId, UnitType type)
             throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
-        
+
         if (type == null) {
             throw new InvalidUnitException("Null type");
         }
@@ -144,14 +147,14 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public void decommissionUnit(int unitId) 
+    public void decommissionUnit(int unitId)
             throws IDNotRecognisedException, IllegalStateException {
-        
+
         int index = findUnitIndex(unitId);
         Unit u = units[index];
 
         if (u.getStatus() == UnitStatus.EN_ROUTE ||
-            u.getStatus() == UnitStatus.AT_SCENE) {
+                u.getStatus() == UnitStatus.AT_SCENE) {
             throw new IllegalStateException("Unit busy");
         }
 
@@ -162,7 +165,7 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public void transferUnit(int unitId, int newStationId)
             throws IDNotRecognisedException, IllegalStateException {
-        
+
         int uIndex = findUnitIndex(unitId);
         int sIndex = findStationIndex(newStationId);
 
@@ -187,7 +190,7 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public void setUnitOutOfService(int unitId, boolean outOfService)
             throws IDNotRecognisedException, IllegalStateException {
-        
+
         int index = findUnitIndex(unitId);
         Unit u = units[index];
 
@@ -219,7 +222,7 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public int reportIncident(IncidentType type, int severity, int x, int y)
             throws InvalidSeverityException, InvalidLocationException {
-        
+
         if (type == null || severity < 1 || severity > 5) {
             throw new InvalidSeverityException("Invalid severity");
         }
@@ -241,7 +244,7 @@ public class CityRescueImpl implements CityRescue {
         Incident inc = incidents[findIncidentIndex(incidentId)];
 
         if (inc.getStatus() == IncidentStatus.RESOLVED ||
-            inc.getStatus() == IncidentStatus.CANCELLED) {
+                inc.getStatus() == IncidentStatus.CANCELLED) {
             throw new IllegalStateException("Cannot cancel");
         }
 
@@ -257,7 +260,7 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public void escalateIncident(int incidentId, int newSeverity)
             throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
-        
+
         if (newSeverity < 1 || newSeverity > 5) {
             throw new InvalidSeverityException("Invalid severity");
         }
@@ -265,7 +268,7 @@ public class CityRescueImpl implements CityRescue {
         Incident inc = incidents[findIncidentIndex(incidentId)];
 
         if (inc.getStatus() == IncidentStatus.RESOLVED ||
-            inc.getStatus() == IncidentStatus.CANCELLED) {
+                inc.getStatus() == IncidentStatus.CANCELLED) {
             throw new IllegalStateException("Cannot escalate");
         }
 
@@ -331,7 +334,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void tick() {
-        
+
         tick++;
 
         for (int i = 0; i < unitCount; i++) {
@@ -346,7 +349,7 @@ public class CityRescueImpl implements CityRescue {
 
                     u.setStatus(UnitStatus.AT_SCENE);
                     inc.setStatus(IncidentStatus.IN_PROGRESS);
-                    u.setWorkRemaining(u.getTicksToResolve());
+                    u.workRemaining = u.getTicksToResolve();
                 }
             }
         }
@@ -370,7 +373,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String getStatus() {
-        
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("TICK=").append(tick).append("\n");
@@ -399,7 +402,7 @@ public class CityRescueImpl implements CityRescue {
 
     private void moveUnit(Unit u, int tx, int ty) {
 
-        int[][] dirs = {{0,-1},{1,0},{0,1},{-1,0}};
+        int[][] dirs = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
         for (int[] d : dirs) {
             int nx = u.getX() + d[0];
@@ -431,7 +434,7 @@ public class CityRescueImpl implements CityRescue {
 
     private String formatUnit(Unit u) {
         return "U#" + u.getId() +
-                " TYPE=" + u.getType() +
+                " TYPE=" + u.type +
                 " HOME=" + u.getHomeStationId() +
                 " LOC=(" + u.getX() + "," + u.getY() + ")" +
                 " STATUS=" + u.getStatus() +
@@ -440,6 +443,7 @@ public class CityRescueImpl implements CityRescue {
                 (u.getStatus() == UnitStatus.AT_SCENE ?
                         " WORK=" + u.getWorkRemaining() : "");
     }
+
     private String formatIncident(Incident i) {
         return "I#" + i.getId() +
                 " TYPE=" + i.getType() +
@@ -463,6 +467,7 @@ public class CityRescueImpl implements CityRescue {
                 return i;
         throw new IDNotRecognisedException("Not found");
     }
+
     private int findIncidentIndex(int id) throws IDNotRecognisedException {
         for (int i = 0; i < incidentCount; i++)
             if (incidents[i].getId() == id)

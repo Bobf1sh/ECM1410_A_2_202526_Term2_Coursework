@@ -1,4 +1,8 @@
 import org.junit.jupiter.api.Test;
+import cityrescue.CityRescue;
+import cityrescue.CityRescueImpl;
+import cityrescue.enums.UnitType;
+import cityrescue.enums.IncidentType;
 
 public class DemoTest {
 

@@ -341,15 +341,20 @@ public class CityRescueImpl implements CityRescue {
             Unit u = units[i];
 
             if (u.getStatus() == UnitStatus.EN_ROUTE) {
-                Incident inc = incidents[findIncidentIndex(u.getAssignedIncidentId())];
-                moveUnit(u, inc.getX(), inc.getY());
+                try {
+                    Incident inc = incidents[findIncidentIndex(u.getAssignedIncidentId())];
+                    moveUnit(u, inc.getX(), inc.getY());
 
-                if (u.getX() == inc.getX() &&
-                        u.getY() == inc.getY()) {
+                    if (u.getX() == inc.getX() &&
+                            u.getY() == inc.getY()) {
 
-                    u.setStatus(UnitStatus.AT_SCENE);
-                    inc.setStatus(IncidentStatus.IN_PROGRESS);
-                    u.workRemaining = u.getTicksToResolve();
+                        u.setStatus(UnitStatus.AT_SCENE);
+                        inc.setStatus(IncidentStatus.IN_PROGRESS);
+                        u.workRemaining = u.getTicksToResolve();
+                    }
+                } catch (IDNotRecognisedException e) {
+                    u.setStatus(UnitStatus.IDLE);
+                    u.setAssignedIncidentId(-1);
                 }
             }
         }
@@ -361,9 +366,11 @@ public class CityRescueImpl implements CityRescue {
                 u.decrementWork();
 
                 if (u.getWorkRemaining() == 0) {
-                    Incident inc = incidents[findIncidentIndex(u.getAssignedIncidentId())];
-                    inc.setStatus(IncidentStatus.RESOLVED);
-
+                    try {
+                        Incident inc = incidents[findIncidentIndex(u.getAssignedIncidentId())];
+                        inc.setStatus(IncidentStatus.RESOLVED);
+                    } catch (IDNotRecognisedException e) {
+                    }
                     u.setStatus(UnitStatus.IDLE);
                     u.setAssignedIncidentId(-1);
                 }

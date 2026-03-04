@@ -7,25 +7,28 @@ import cityrescue.enums.IncidentType;
 public class DemoTest {
 
     @Test
-    void demonstration() {
+    void demonstration() throws Exception {
         CityRescue rescue = new CityRescueImpl();
 
+        // Initialise grid
+        rescue.initialise(10, 10);
+
         // Add station
-        rescue.addStation("S1", 0, 0);
+        int stationId = rescue.addStation("S1", 0, 0);
 
         // Add units
-        rescue.addUnit("S1", "U1", UnitType.AMBULANCE);
-        rescue.addUnit("S1", "U2", UnitType.AMBULANCE);
+        int unitId1 = rescue.addUnit(stationId, UnitType.AMBULANCE);
+        int unitId2 = rescue.addUnit(stationId, UnitType.AMBULANCE);
 
         // Add incident
-        rescue.addIncident("I1", IncidentType.MEDICAL, 3, 0);
+        int incidentId = rescue.reportIncident(IncidentType.MEDICAL, 3, 3, 0);
 
         // Dispatch
-        rescue.dispatch("I1");
+        rescue.dispatch();
 
         // Show state
-        System.out.println(rescue.getUnitStatus("U1"));
-        System.out.println(rescue.getIncidentStatus("I1"));
+        System.out.println(rescue.viewUnit(unitId1));
+        System.out.println(rescue.viewIncident(incidentId));
 
         // Tick several times
         rescue.tick();
@@ -33,7 +36,7 @@ public class DemoTest {
         rescue.tick();
 
         // Show updated state
-        System.out.println(rescue.getUnitStatus("U1"));
-        System.out.println(rescue.getIncidentStatus("I1"));
+        System.out.println(rescue.viewUnit(unitId1));
+        System.out.println(rescue.viewIncident(incidentId));
     }
 }

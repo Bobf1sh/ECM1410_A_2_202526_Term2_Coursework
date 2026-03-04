@@ -23,7 +23,7 @@ public class Station {
     this.name = name;
     this.x = x;
     this.y = y;
-    this.capacity = 1;
+    this.capacity = 10;
     this.unitIds = new int[capacity];
     this.unitCount = 0;
   }
